@@ -1,0 +1,5 @@
+packer_cache/
+vagrantfiles/
+packer-openbsd-6.8-amd64-parallels/
+.vagrant/
+*.box

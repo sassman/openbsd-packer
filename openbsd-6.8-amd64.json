@@ -1,0 +1,68 @@
+{
+  "builders": [
+    {
+      "type": "parallels-iso",
+      "parallels_tools_mode": "disable",
+      "guest_os_type": "freebsd-8",
+      "iso_checksum": "sha256:47e291fcc2d0c1a8ae0b66329f040b33af755b6adbd21739e20bb5ad56f62b6c",
+      "iso_url": "{{user `mirror`}}/pub/OpenBSD/6.8/amd64/install68.iso",
+      "boot_command": [
+        "S<enter>",
+        "cat <<EOF >>install.conf<enter>",
+        "System hostname = openbsd68<enter>",
+        "Password for root = vagrant<enter>",
+        "Setup a user = vagrant<enter>",
+        "Password for user = vagrant<enter>",
+        "Allow root ssh login = yes<enter>",
+        "What timezone are you in = UTC<enter>",
+        "Location of sets = cd<enter>",
+        "Set name(s) = -game*.tgz -x*.tgz<enter>",
+        "Directory does not contain SHA256.sig. Continue without verification = yes<enter>",
+        "EOF<enter>",
+        "install -af install.conf \u0026\u0026 reboot<enter>"
+      ],
+      "boot_wait": "30s",
+      "disk_size": 10140,
+      "output_directory": "box",
+      "shutdown_command": "/sbin/halt -p",
+      "ssh_username": "root",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "vm_name": "openbsd-6.8-amd64",
+      "memory": "384",
+      "cpus": "1"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "openbsd-6.8-amd64-{{.Provider}}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "Vagrantfile.template"
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "MIRROR={{user `mirror`}}",
+        "ftp_proxy={{user `ftp_proxy`}}",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}"
+      ],
+      "execute_command": "export {{.Vars}} \u0026\u0026 cat {{.Path}} | su -m",
+      "scripts": [
+        "scripts/postinstall.sh",
+        "scripts/ports.sh",
+        "scripts/vagrant.sh",
+        "scripts/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "ftp_proxy": "{{env `ftp_proxy`}}",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "mirror": "https://ftp.fau.de"
+  }
+}
