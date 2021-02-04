@@ -7,6 +7,7 @@
 ```sh
 vagrant init sassman/openbsd-6.8-amd64 --box-version 6.8.0
 vagrant up
+vagrant rsync-auto
 ```
 
 ## build
