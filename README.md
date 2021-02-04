@@ -2,12 +2,19 @@
 
 > Needed only a parallels vagrant image with stock OpenBSD 6.8
 
+## use without build
+
+```sh
+vagrant init sassman/openbsd-6.8-amd64 --box-version 6.8.0
+vagrant up
+```
+
 ## build
 
 clone this repository then and run inside:
 
 ```sh
-packer build openbsd-6.8-amd64.json
+packer build -var-file=vars/6.8.json openbsd-amd64.json
 ```
 
 ## usage after building
@@ -27,6 +34,18 @@ prlctl --version && vagrant --version && packer --version
 prlctl version 16.1.2 (49151)
 Vagrant 2.2.14
 1.6.6
+```
+
+## published as
+
+```sh
+vagrant cloud publish \
+  sassman/openbsd-6.8-amd64 6.8.0 \
+  parallels openbsd-6.8-amd64-parallels.box \
+  -d "OpenBSD 6.8 no ansible, no chef, just plain openBSD with ports installed" \
+  --version-description "openBSD 6.8" \
+  --release \
+  --short-description "OpenBSD 6.8"
 ```
 
 ## whats in the box
