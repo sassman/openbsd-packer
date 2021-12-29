@@ -1,55 +1,54 @@
-# OpenBSD 6.8 packer template for parallels on macOS XI
+# OpenBSD 7.0 packer template for parallels on macOS XI
 
-> Needed only a parallels vagrant image with stock OpenBSD 6.8
+> Needed only a parallels vagrant image with stock OpenBSD 7.0
 
-## use without build
+## HowTo use the vagrant box (without building yourself)
 
 ```sh
-vagrant init sassman/openbsd-6.8-amd64 --box-version 6.8.0
+vagrant init sassman/openbsd-7.0-amd64 --box-version 7.0.0
 vagrant up
 vagrant rsync-auto
 ```
 
-## build
+## HowTo build it yourself
 
-clone this repository then and run inside:
-
+clone this repository 
 ```sh
-packer build -var-file=vars/6.8.json openbsd-amd64.json
+git clone git@github.com:sassman/openbsd-packer.git
+cd openbsd-packer
 ```
 
-## usage after building
+### Build the vagrant box
 
-```sh
-vagrant box add openbsd-6.8 openbsd-6.8-amd64-parallels.box
-vagrant init openbsd-6.8
-vagrant up
-vagrant rsync-auto
-```
+packer builds the box with: `make build`
+
+### use the vagrant box
+
+vagrant init and up: `make try`
 
 ## tested with
 
 ```sh
 prlctl --version && vagrant --version && packer --version
 
-prlctl version 16.1.2 (49151)
-Vagrant 2.2.14
-1.6.6
+prlctl version 17.1.1 (51537)
+Vagrant 2.2.19
+1.7.0
 ```
 
 ## published as
 
 ```sh
 vagrant cloud publish \
-  sassman/openbsd-6.8-amd64 6.8.0 \
-  parallels openbsd-6.8-amd64-parallels.box \
-  -d "OpenBSD 6.8 no ansible, no chef, just plain openBSD with ports installed" \
-  --version-description "openBSD 6.8" \
+  sassman/openbsd-7.0-amd64 7.0.0 \
+  parallels openbsd-7.0-amd64-parallels.box \
+  -d "OpenBSD 7.0 no ansible, no chef, just plain openBSD with ports installed" \
+  --version-description "openBSD 7.0" \
   --release \
-  --short-description "OpenBSD 6.8"
+  --short-description "OpenBSD 7.0"
 ```
 
-## whats in the box
+## what's in the box
 
 - ports are installed
 - `doas` configuration for vagrant without password
@@ -71,6 +70,6 @@ vagrant cloud publish \
 - [docs/vagrant-parallels](https://parallels.github.io/vagrant-parallels/docs/configuration.html)
 - [docs/vagrant-rsync](https://www.vagrantup.com/docs/synced-folders/rsync)
 - [docs/packer-parallels](https://www.packer.io/docs/builders/parallels/iso)
-- [openBSD/checksums](https://ftp.spline.de/pub/OpenBSD/6.8/amd64/SHA256)
+- [openBSD/checksums](https://ftp.spline.de/pub/OpenBSD/7.0/amd64/SHA256)
 - [inspiration](https://github.com/ryanmaclean/packer-openbsd)
 - [inspiration-2](https://github.com/jugatsu/packer-mikrotik)
